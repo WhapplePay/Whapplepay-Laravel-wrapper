@@ -12,7 +12,7 @@ To use the WhapplePay SDK in your project, follow these steps:
    ```
 2. Include the SDK in your PHP files:
    ```php
-   use Vendor\Whapplepay\WhapplePaySDK;
+   use VWhapplepay\Whapplepay;
    ```
 
 #### Configuration
