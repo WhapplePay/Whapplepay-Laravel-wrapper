@@ -1,0 +1,24 @@
+{
+    "name": "whapplepaysdk/whapplepay",
+    "description": "Empower your platform to seamlessly accept Whapple Pay payments with the Whapple Pay SDK. This comprehensive software development kit offers developers a robust solution for integrating Whapple Pay payment capabilities into their applications, ensuring a smooth and secure payment experience for users. Simplify payment processing and enhance user convenience with the Whapple Pay SDK, designed to streamline payment workflows and deliver exceptional payment acceptance functionalities.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wg Organisation",
+            "email": "sdk@whapplepay.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "version": "1.0.1",
+    "autoload": {
+        "psr-4": {
+            "Whapplepay\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.2.4",
+        "guzzlehttp/guzzle": "^7.8"
+    }
+   
+}
