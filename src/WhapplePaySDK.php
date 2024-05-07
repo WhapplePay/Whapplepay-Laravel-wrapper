@@ -3,7 +3,6 @@
 namespace Whapplepay;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Config;
 
 class WhapplePaySDK
 {
@@ -12,46 +11,50 @@ class WhapplePaySDK
     public function __construct()
     {
         $this->client = new Client([
-            'base_uri' => Config::get('app.whapplepay_api_url', 'https://api.whapplepay.com/'),
+            'base_uri' => env('WHAPPLEPAY_API_URL', 'https://api.whapplepay.com/'),
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
         ]);
     }
 
-    public function processPayment($amount, $currency, $paymentMethod, $clientId, $clientSecret, $phoneNumber)
+    public function processPayment($amount, $paymentMethod, $clientId, $clientSecret, $phoneNumber)
     {
-        $data = [
-            'amount' => $amount,
-            'currency' => $currency,
-            'paymentMethod' => Config::get('app.whapplepay_payment_method', 'WhapplePay'),
-            'redirectUrls' => [
-                'successUrl' => Config::get('app.whapplepay_success_url', 'http://example.com/success'),
-                'cancelUrl' => Config::get('app.whapplepay_cancel_url', 'http://example.com/cancel'),
-            ],
-            'client_id' => Config::get('app.whapplepay_client_id', ''),
-            'client_secret' => Config::get('app.whapplepay_client_secret', ''),
-            'phone_number' => $phoneNumber, 
-        ];
-        
-        $response = $this->makeApiCall('POST', 'payments', $data);
-
-        return $response;
+        try {
+            $data = [
+                'amount' => $amount,
+                'currency' => env('CURRENCY', 'USD'), // Get currency from env, default to USD
+                'paymentMethod' => env('WHAPPLEPAY_PAYMENT_METHOD', 'WhapplePay'),
+                'redirectUrls' => [
+                    'successUrl' => env('WHAPPLEPAY_SUCCESS_URL', 'http://example.com/success'),
+                    'cancelUrl' => env('WHAPPLEPAY_CANCEL_URL', 'http://example.com/cancel'),
+                ],
+                'client_id' => env('WHAPPLEPAY_CLIENT_ID', ''),
+                'client_secret' => env('WHAPPLEPAY_CLIENT_SECRET', ''),
+                'phone_number' => $phoneNumber, 
+            ];
+            
+            return $this->makeApiCall('POST', 'payments', $data);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 
-    public function withdrawMoney($amount, $currency, $withdrawMethod, $clientId, $clientSecret)
+    public function withdrawMoney($amount, $withdrawMethod, $clientId, $clientSecret)
     {
-        $data = [
-            'amount' => $amount,
-            'currency' => $currency,
-            'withdrawMethod' => $withdrawMethod,
-            'client_id' => $clientId,
-            'client_secret' => $clientSecret,
-        ];
-
-        $response = $this->makeApiCall('POST', 'withdrawals', $data);
-
-        return $response;
+        try {
+            $data = [
+                'amount' => $amount,
+                'currency' => env('CURRENCY', 'USD'), // Get currency from env, default to USD
+                'withdrawMethod' => $withdrawMethod,
+                'client_id' => env('WHAPPLEPAY_CLIENT_ID', ''),
+                'client_secret' => env('WHAPPLEPAY_CLIENT_SECRET', ''),
+            ];
+    
+            return $this->makeApiCall('POST', 'withdrawals', $data);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 
     private function makeApiCall($method, $endpoint, $data = [])
@@ -60,10 +63,10 @@ class WhapplePaySDK
             $response = $this->client->request($method, $endpoint, [
                 'json' => $data,
             ]);
-
+    
             return json_decode($response->getBody()->getContents(), true);
         } catch (\Exception $e) {
-            return ['error' => $e->getMessage()];
+            throw new \Exception('API request failed: ' . $e->getMessage());
         }
     }
 }

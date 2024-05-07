@@ -12,7 +12,8 @@ To use the WhapplePay SDK in your project, follow these steps:
    ```
 2. Include the SDK in your PHP files:
    ```php
-   use VWhapplepay\Whapplepay;
+   use Whapplepay\WhapplePaySDK;
+
    ```
 
 #### Configuration
@@ -22,11 +23,12 @@ Base URl = http://whapplepay.com/api/sdkprocess-payment/payments
 
 ```plaintext
 WHAPPLEPAY_API_URL=https://api.whapplepay.com/
+WHAPPLEPAY_PAYMENT_METHOD=MobileMoney
 WHAPPLEPAY_SUCCESS_URL=http://example.com/success
 WHAPPLEPAY_CANCEL_URL=http://example.com/cancel
-WHAPPLEPAY_CLIENT_ID=your_client_id_here
-WHAPPLEPAY_CLIENT_SECRET=your_client_secret_here
-WHAPPLEPAY_PAYMENT_METHOD=MobileMoney  
+WHAPPLEPAY_CLIENT_ID=your_whapplepay_client_id
+WHAPPLEPAY_CLIENT_SECRET=your_whapplepay_client_secret
+CURRENCY=XAF
 
 ```
 
@@ -72,7 +74,7 @@ if (isset($response['transaction']) && isset($response['status']) && $response['
 Parameters:
 - `$amount`: The amount of the payment.
 - `$currency`: The currency of the payment (e.g., "F.CFA", "NGN").
-- `$paymentMethod`: The payment method (e.g., "CreditCard", "MobileMoney").
+- `$paymentMethod`: The payment method (e.g., "WhapplpePay", "MobileMoney").
 - `$clientId`: Your client ID for authentication.
 - `$clientSecret`: Your client secret for authentication.
 - `$phoneNumber`: The phone number for MobileMoney payments.
