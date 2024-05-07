@@ -8,7 +8,8 @@ Welcome to the WhapplePay SDK documentation. This SDK allows seamless integratio
 To use the WhapplePay SDK in your project, follow these steps:
 1. Install the SDK package using Composer:
    ```bash
-   composer require vendor/whapplepay-sdk
+   composer require vendor/whapplepay-sdk:^1.0.0
+
    ```
 2. Include the SDK in your PHP files:
    ```php
